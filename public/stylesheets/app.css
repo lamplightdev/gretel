@@ -1,0 +1,6 @@
+@import url(normalize.css);
+/* line 3, ../sass/app.scss */
+body {
+  font-family: Arial, sans-serif;
+  font-size: 16px;
+}
