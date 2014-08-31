@@ -1,32 +1,21 @@
-function Gretel(options) {
-  this.options = options;
-}
-
-Gretel.prototype.getOptions = function() {
-  console.log(this.options);
-};
-
 (function() {
   'use strict';
 
-  var g = new Gretel({
-    'maxNumberPoints': 3,
-    'maxNumberWaypoints': 10
-  });
+  var pointer = document.getElementById("pointer");
 
-  init();
+  window.g = new Gretel({
+    positionUpdate: function(position) {
+      pointer.style.transform = "rotateZ(" + position.bearing + "deg)";
 
-  function init() {
-    if (window.DeviceOrientationEvent) {
-      window.addEventListener('deviceorientation', function(eventData) {
-        var dir = eventData.alpha;
+      var position2 = {
+        location: {
+          lat: 50,
+          lng: 0
+        }
+      };
 
-        var pointer = document.getElementById("pointer");
-        pointer.style.transform = "rotateZ(" + dir + "deg)";
-        }, false);
-    } else {
-      console.log('Not supported on your device or browser.  Sorry.');
+      console.log('distance', Hansel.distanceBetween(position.location, position2.location));
+      console.log('bearing', Hansel.bearingBetween(position.location, position2.location));
     }
-  }
-
+  });
 })();
