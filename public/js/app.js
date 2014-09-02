@@ -1,33 +1,79 @@
 (function() {
   'use strict';
 
-  var rose = document.getElementById("rose");
-  var pointer = document.getElementById("pointer");
-  var lat = document.querySelectorAll(".lat")[0];
-  var lng = document.querySelectorAll(".lng")[0];
-  var bearing = document.querySelectorAll(".bearing")[0];
+  function App() {
+    this.lat = document.getElementById("current-lat");
+    this.lng = document.getElementById("current-lng");
+    this.bearing = document.getElementById("current-bearing");
 
-  window.g = new Gretel({
-    positionUpdate: function(position) {
-      rose.style.transform = "rotateZ(" + position.bearing + "deg)";
+    this.destinationLat = document.getElementById("destination-lat");
+    this.destinationLng = document.getElementById("destination-lng");
 
-      lat.innerText = position.location.lat.toFixed(2);
-      lng.innerText = position.location.lng.toFixed(2);
-      bearing.innerText = Math.round(360-position.bearing);
+    this.currentPosition = new Position();
+    this.destinationPosition = new Position({
+      lat: 80,
+      lng: 12
+    });
+    this.wayPoints = [];
 
-      var position2 = {
-        location: {
-          lat: 50,
-          lng: 0
-        }
-      };
+    this.compass = new Compass({
+      container: '#compass',
+      rose: '#rose',
+      pointer: '#pointer',
+      position: this.currentPosition,
+      destination: this.destinationPosition
+    });
 
-      var bearingTo = Hansel.bearingBetween(position.location, position2.location);
+    this.gretel = new Gretel({
+      positionUpdate: (this.positionUpdate).bind(this)
+    });
+  }
 
-      console.log('distance', Hansel.distanceBetween(position.location, position2.location));
-      console.log('bearing', bearingTo, position.bearing);
+  App.prototype.positionUpdate = function(newPosition) {
+    this.currentPosition.lat = newPosition.lat;
+    this.currentPosition.lng = newPosition.lng;
+    this.currentPosition.bearing = newPosition.bearing;
 
-      pointer.style.transform = "rotateZ(" + (bearingTo + position.bearing) + "deg)";
+    if(typeof this.currentPosition.lat !== 'undefined') {
+      this.lat.innerText = this.currentPosition.lat.toFixed(2);
     }
-  });
+
+    if(typeof this.currentPosition.lng !== 'undefined') {
+      this.lng.innerText = this.currentPosition.lng.toFixed(2);
+    }
+
+    if(typeof this.currentPosition.bearing !== 'undefined') {
+      this.bearing.innerText = Math.round(360-this.currentPosition.bearing);
+    }
+  };
+
+  //destinationLat.value = destination.location.lat;
+  //destinationLng.value = destination.location.lng;
+  //updatePointer();
+
+  /*
+
+  function initWatches() {
+    Object.observe(destination.location, updatePointer);
+
+    destinationLat.addEventListener('change', function(event) {
+      destination.location.lat = event.target.value;
+    });
+
+    destinationLng.addEventListener('change', function(event) {
+      destination.location.lng = event.target.value;
+    });
+  }
+
+  function updatePointer(changes) {
+    var bearingTo = Hansel.bearingBetween(position.location, destination.location);
+    pointer.style.transform = "rotateZ(" + (bearingTo + position.bearing) + "deg)";
+  }
+  */
+
+
+
+  //initWatches();
+
+  return new App();
 })();
