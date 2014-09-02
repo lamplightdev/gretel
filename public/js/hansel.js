@@ -1,6 +1,6 @@
 function Hansel() {
 
-};
+}
 
 //calculations inspired by: http://www.yourhomenow.com/house/haversine.html
 
@@ -8,15 +8,15 @@ Hansel.R  = 6371;
 
 Hansel.toRad = function(deg) {
   return deg * Math.PI / 180;
-}
+};
 
 Hansel.toDeg = function(rad) {
   return rad * 180 / Math.PI;
-}
+};
 
 Hansel.toBrng = function(rad) {
   return (Hansel.toDeg(rad)+360) % 360;
-}
+};
 
 Hansel.distanceBetween = function (location1, location2) {
   return Math.acos(

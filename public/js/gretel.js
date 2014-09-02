@@ -35,9 +35,9 @@ function Gretel(options) {
     enableHighAccuracy: this.options.geoHighAccuracy,
     maximumAge: this.options.geoMaximumAge,
     timeout: this.options.geoTimeout
-  }
+  };
 
-  this.locationTrackID = null
+  this.locationTrackID = null;
 
   this.trackLocation(this.options.trackLocation);
   this.trackBearing(this.options.trackBearing);

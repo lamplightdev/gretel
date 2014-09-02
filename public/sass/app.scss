@@ -5,14 +5,20 @@ body {
   font-size: 16px;
 }
 
-#pointer {
+#compass {
+  position: relative;
+
   transform-origin: 50% 50%;
-  width: 200px;
-  height: 200px;
+  width: 300px;
+  height: 300px;
   margin: 0 auto;
 
   img {
     width: 100%;
     height: auto;
+
+    position: absolute;
+    top: 0;
+    left: 0;
   }
 }
