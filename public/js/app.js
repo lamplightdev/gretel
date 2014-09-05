@@ -24,19 +24,7 @@
       distance: null
     };
 
-    this.wayPoints = [{
-      position: new Position({
-        lat: 60,
-        lng: 20
-      }),
-      distance: null
-    }, {
-      position: new Position({
-        lat: 20,
-        lng: 60
-      }),
-      distance: null
-    }];
+    this.waypoints = [];
 
     this.compass = new Compass({
       container: '#compass',
@@ -51,6 +39,8 @@
     });
 
     this.init();
+
+    this.addWaypoint(12,13);
   }
 
   App.prototype.positionUpdate = function(newPosition) {
@@ -109,32 +99,65 @@
     //this.destinationLat.value = this.destinationPosition.lat;
     //this.destinationLng.value = this.destinationPosition.lng;
 
-    this.waypointAdd.addEventListener('click', (this.addWaypoint).bind(this));
+    this.waypointAdd.addEventListener('click', (function() {
+      this.addWaypoint();
+    }).bind(this));
 
     Object.observe(this.destinationMeta, (this.destinationMetaUpdate).bind(this));
+    Array.observe(this.waypoints, (this.waypointsUpdate).bind(this));
 
     this.positionUpdate();
     this.destinationUpdate();
 
-    this.showWayPoints();
+    this.updateWaypoints();
   };
 
-  App.prototype.addWaypoint = function() {
-    this.wayPoints.push(new Position({
-      lat: 44,
-      lng: 30
-    }));
+  App.prototype.addWaypoint = function(lat, lng) {
+    var position = new Position({
+      lat: typeof lat === 'undefined' ? this.currentPosition.lat : lat,
+      lng: typeof lng === 'undefined' ? this.currentPosition.lng : lng
+    });
 
-    this.showWayPoints();
+    this.waypoints.push(position);
   };
 
-  App.prototype.showWayPoints = function() {
+  App.prototype.waypointsUpdate = function(changes) {
+    this.updateWaypoints();
+  };
+
+  App.prototype.updateWaypoints = function() {
     var appThis = this;
 
     appThis.waypointsContainer.innerHTML = '';
-    this.wayPoints.forEach(function(point, index) {
+    this.waypoints.forEach(function(point, index) {
       var tmpl = appThis.getTemplate('waypoint');
       var node = appThis.buildNode(tmpl, 'waypoint-' + index);
+
+      var labelDistance = node.getElementsByClassName('destination-distance')[0];
+
+      var labelLat = node.getElementsByClassName('destination-lat')[0];
+      labelLat.value = point.lat;
+      labelLat.addEventListener('change', function(event) {
+        point.lat = event.target.value;
+      });
+
+      var labelLng = node.getElementsByClassName('destination-lng')[0];
+      labelLng.value = point.lng;
+      labelLng.addEventListener('change', function(event) {
+        point.lng = event.target.value;
+      });
+
+      labelDistance.innerText = Hansel.distanceBetween(appThis.currentPosition, point);
+
+      Object.observe(point, function(changes) {
+        labelLat.value = changes[0].object.lat;
+        labelLng.value = changes[0].object.lng;
+        labelDistance.innerText = Hansel.distanceBetween(appThis.currentPosition, point);
+      });
+
+      Object.observe(appThis.currentPosition, function() {
+        labelDistance.innerText = Hansel.distanceBetween(appThis.currentPosition, point);
+      });
 
       appThis.waypointsContainer.appendChild(node);
     });
