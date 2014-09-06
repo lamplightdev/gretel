@@ -6,10 +6,7 @@ block body
       src='img/rose.png'
       alt=''
       )
-    img#pointer(
-      src='img/pointer.png'
-      alt=''
-      )
+    div.pointers
     img#arrow(
       src='img/arrow.png'
       alt=''
@@ -19,9 +16,9 @@ block body
   | Lng: <span id='current-lng'></span>
   | Bearing: <span id='current-bearing'></span>
 
-  h3 Way points
-  div#waypoints-container
+  h3 Destinations
+  div#destinations-container
 
-  button#waypoint-add add
+  button#destination-add add
 
   footer

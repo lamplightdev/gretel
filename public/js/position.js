@@ -15,10 +15,5 @@
     }
   }
 
-  Position.prototype.isSet = function() {
-    return  this.lat !== null && typeof this.lat !== 'undefined' &&
-            this.lng !== null && typeof this.lng !== 'undefined';
-  };
-
   window.Position = Position;
 })();
