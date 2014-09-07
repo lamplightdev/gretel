@@ -67,7 +67,7 @@
     }
 
     if(this.currentPosition.bearing !== null && typeof this.currentPosition.bearing !== 'undefined') {
-      this.bearing.textContent = Math.round(360-this.currentPosition.bearing);
+      this.bearing.textContent = Math.round(this.currentPosition.bearing);
     } else {
       this.bearing.textContent = '...';
     }

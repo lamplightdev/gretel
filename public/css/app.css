@@ -354,3 +354,11 @@ body {
     position: absolute;
     top: 0;
     left: 0; }
+
+#rose {
+  transition: transform 1s ease-out 0s; }
+
+.pointers img {
+  transition: transform 1s ease-out 0s; }
+
+/*# sourceMappingURL=app.css.map */

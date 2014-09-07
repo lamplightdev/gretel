@@ -23,6 +23,12 @@ body {
   }
 }
 
-#pointer {
-  //transition: transform 1s ease-out 0s;
+#rose {
+  transition: transform 1s ease-out 0s;
+}
+
+.pointers {
+  img {
+    transition: transform 1s ease-out 0s;
+  }
 }

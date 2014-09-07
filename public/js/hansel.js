@@ -28,6 +28,10 @@
     ) * Hansel.R;
   };
 
+  Hansel.angleBetween = function (position1, position2) {
+    return Math.abs(position2.bearing - position1.bearing);
+  };
+
   Hansel.bearingBetween = function (position1, position2) {
     var dLon = position2.lng - position1.lng;
     var y = Math.sin(dLon) * Math.cos(position2.lat);
