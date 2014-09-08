@@ -94,22 +94,26 @@
       var node = appThis.buildNode(tmpl, 'destination-' + index);
 
       var labelDistance = node.getElementsByClassName('destination-distance')[0];
-
       var labelLat = node.getElementsByClassName('destination-lat')[0];
+      var labelLng = node.getElementsByClassName('destination-lng')[0];
+      var labelDirection = node.getElementsByClassName('destination-direction')[0];
+
       labelLat.value = point.lat;
       labelLat.addEventListener('change', function(event) {
         point.lat = event.target.value;
         appThis.compass.update();
       });
 
-      var labelLng = node.getElementsByClassName('destination-lng')[0];
       labelLng.value = point.lng;
       labelLng.addEventListener('change', function(event) {
         point.lng = event.target.value;
         appThis.compass.update();
       });
 
-      labelDistance.textContent = Hansel.distanceBetween(appThis.currentPosition, point);
+      labelDistance.textContent = Hansel.distanceBetween(appThis.currentPosition, point).toFixed(2);
+
+      var bearingTo = Hansel.bearingBetween(appThis.currentPosition, point);
+      labelDirection.style.transform = "rotateZ(" + (appThis.currentPosition.bearing + bearingTo) + "deg)";
 
       appThis.destinationsContainer.appendChild(node);
     });
@@ -121,7 +125,9 @@
         return "" +
           "<input type='text' name='destination-lat' class='destination-lat'></input>" +
           "<input type='text' name='destination-lng' class='destination-lng'></input>" +
-          "<span name='destination-distance' class='destination-distance'></span>m away";
+          "<span name='destination-direction' class='destination-direction'></span>" +
+          "<span name='destination-distance' class='destination-distance'></span>m away" +
+          "";
     }
   };
 
